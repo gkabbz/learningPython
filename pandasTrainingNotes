@@ -19,5 +19,7 @@ Dataframe
 
 - A dataframe is a 2 dimensional labeled data structure with columns of potentially different types. It's like a spreadsheet or SQL table, or a dict of series objects.
 - It is the most commonly used pandas object
-- You can optionally pass index(row labels) and columns (column labels) to a dataframe. By doing this however, you are explicitly defining the index and columns of the dataframe. Therefore a dict of series plus a specific index will discard data not matching up to the passed index.
+- You can optionally pass index(row labels) and columns (column labels) to a dataframe. By doing this however, you are explicitly defining the index and columns of the dataframe.
+Therefore a dict of series plus a specific index will discard data not matching up to the passed index.
+
 
