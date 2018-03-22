@@ -1,0 +1,70 @@
+Spark Data Frame Basics
+
+1. Starting a Spark Session
+
+from pyspark.sql import SparkSession ##capitalization is important
+spark = SparkSession.builder.appName('selectedName').getOrCreate()  ## to start the session
+df = spark.read.parquet('s3://net-mozaws-prod-us-west-2-pipeline-data/telemetry-new-profile-parquet/v1/') ## if you tab after read. it will show you options available. If reading from directories, spark is finicky working with file paths with spaces so you may need to get rid of them.
+df = spark.read.csv('')
+
+2. Reading the dataFrame
+
+- show the data in the frame:       df.show()
+- show the schema:                  df.printSchema()
+- show the column names:            df.columns      ## attribute so no need for ()
+- get statistical summary of df:    df.describe().show ## statistical summary of the numeric columns in the dataframe
+
+3. Clarifying the schema ##sometimes data schema may not be in good form so you have to define it i.e. everything is saved as a string.
+
+a) import type tools
+from pyspark.sql.types import StructField, StringType, IntegerType, StructType
+
+b) create list of structure fields - expected schema
+data_schema = [StructField('age',IntegerType(),True), StructField('name',StringType(),True)] ##This means (for first part) column relates to is age, I want age to be integer type and boolean to allow whether field can be Null.
+
+c) Pass the data_schema into StructType
+final_struct = StructType(fields = data_schema)
+
+d) Clarify you want the data frame to use the defined schema structure
+
+df = spark.read.parquet('s3://net-mozaws-prod-us-west-2-pipeline-data/telemetry-new-profile-parquet/v1/', schema=final_struct)
+
+4. Selecting vs Grabbing Data
+
+a) Working with columns
+- Returning a column object:                                        df['age']
+- Returning a column in a dataframe (more flexibility):             df.select('age')
+- Select multiple columns in a dataframe and show:                  df.select(['age', 'name']).show
+- Creating a new column:                                            df.withColumn('newage',df[age])
+- Renaming a column:                                                df.withColumnRenamed('age', 'myNewAge')
+
+b) Working with rows
+df.head(2) - returns the first two rows in a dataframe with a list that you can index
+df.head(2)[0] - returns the first row of the two selected above
+
+c) Using SQL with dataframes
+Register the dataframe as a sql temporary view:                     df.createOrReplaceTempView('people')
+Query the temporary view:                                           results = spark.sql("SELECT * FROM people")
+
+d) Filter data
+- Filter a column by specific values (similar to sql):        df.filter("submission_date > 20170101").select('client_id','sap').show()
+- Filter a column using python operators (way to do it):      df.filter(['submission_date'] > 20170101).select('client_id', sap).show()
+- Filtering based on multiple conditions:                     df.filter((df['field1'] > 10) & (df['field2'] = 5)).select().show()
+  ~ = not , & = and, | = or, == = equal
+- Grab a specific row instance:                               df.filter(df['low'] == 197.16).show()
+- To collect data:                                            results = df.filter(df['low'] == 197.16).collect()
+
+e) Group By and Aggregate Functions
+- Group by a dimension:                           df.groupBy("Company")
+- Group by a dimension and aggregate:             df.groupBy("Company").max().show()
+- Summing across rows:                            df.agg({'sales':'sum'}).show
+- Group by and summing:                           1 - groupedData = df.groupBy('Company') ; 2 - Sum: groupedData.agg({'sales':'sum'})
+- Importing functions:                  from pyspark.sql.functions import countDistinct,avg,stddev (if you tab after import you'll see a list of functions available)
+- Count distinct:                                   df.select(countDistinct('sales')).show()
+- To alias:                                         df.select(countDistinct('sales').alias('average sales')).show()
+- Formatting data to remove decimals:              1. Import format_number from pyspark.sql.functions
+                                                   2. avgSales = df.select(countDistinct('sales').alias('average sales'))
+                                                   3. avgSales.select(format_number('average sales',2).show() - to 2 decimal places
+- order by column:                            df.orderBy("sales").show()
+- order by descending:                        df.orderBy(df['sales'].desc()).show()
+

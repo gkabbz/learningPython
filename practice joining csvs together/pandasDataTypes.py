@@ -22,3 +22,14 @@ print(series[9])
 #will return value of the 9th item in the series
 series[9] = 200# will change it's value into from the random value generated above to 200
 
+# 6 Opening a file to read in pandas
+data = pd.read_csv('/Users/gkaberere/Google Drive/Python/Github/learningPython/samplePandasDataSet.csv', sep='\t', header=0, usecols=None, skiprows=None, )
+print(data[0:10])
+
+# 7 describing the data
+print(data.columns) #defines the column names
+print(data.index) #describes the index range
+
+# 8 Selecting Specific columns
+data2 = data[['Country', 'Sales']]
+print(data2)

@@ -22,4 +22,7 @@ Dataframe
 - You can optionally pass index(row labels) and columns (column labels) to a dataframe. By doing this however, you are explicitly defining the index and columns of the dataframe.
 Therefore a dict of series plus a specific index will discard data not matching up to the passed index.
 
+6. For me - when opening csv's my format will be
+data = pd.read_csv('file location', sep='', header=None, index_col=None, usecols=None, skiprows=None)
+ie. what's the file, what's the separator, are you defining column labels, are you defining row labels(index), are you skipping any columns, are you skipping any rows
 
