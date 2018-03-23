@@ -64,7 +64,7 @@ e) Group By and Aggregate Functions
 - To alias:                                         df.select(countDistinct('sales').alias('average sales')).show()
 - Formatting data to remove decimals:              1. Import format_number from pyspark.sql.functions
                                                    2. avgSales = df.select(countDistinct('sales').alias('average sales'))
-                                                   3. avgSales.select(format_number('average sales',2).show() - to 2 decimal places
+                                                   3. vgSales.select(format_number('average sales',2).show() - to 2 decimal places
 - order by column:                            df.orderBy("sales").show()
 - order by descending:                        df.orderBy(df['sales'].desc()).show()
 
