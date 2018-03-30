@@ -53,18 +53,41 @@ d) Filter data
   ~ = not , & = and, | = or, == = equal
 - Grab a specific row instance:                               df.filter(df['low'] == 197.16).show()
 - To collect data:                                            results = df.filter(df['low'] == 197.16).collect()
+- Select Max, Min, Avg, Median in column:                     df.agg({'colName' : 'max'})
+
 
 e) Group By and Aggregate Functions
 - Group by a dimension:                           df.groupBy("Company")
 - Group by a dimension and aggregate:             df.groupBy("Company").max().show()
-- Summing across rows:                            df.agg({'sales':'sum'}).show
+- Summing across rows:                            df.agg({'sales':'sum'}).show()
 - Group by and summing:                           1 - groupedData = df.groupBy('Company') ; 2 - Sum: groupedData.agg({'sales':'sum'})
 - Importing functions:                  from pyspark.sql.functions import countDistinct,avg,stddev (if you tab after import you'll see a list of functions available)
 - Count distinct:                                   df.select(countDistinct('sales')).show()
 - To alias:                                         df.select(countDistinct('sales').alias('average sales')).show()
 - Formatting data to remove decimals:              1. Import format_number from pyspark.sql.functions
                                                    2. avgSales = df.select(countDistinct('sales').alias('average sales'))
-                                                   3. vgSales.select(format_number('average sales',2).show() - to 2 decimal places
+                                                   3. avgSales.select(format_number('average sales',2).show() - to 2 decimal places
 - order by column:                            df.orderBy("sales").show()
 - order by descending:                        df.orderBy(df['sales'].desc()).show()
+
+f) Dates and TimeStamps
+importing functions:                            from pyspark.sql.functions import (dayofmonth, hour, dayofyear, month, year, weekofyear,format_number, date_format,date_add, datediff)
+working with dates:                             df.select(year(df['dateColumn'])).show()
+
+
+
+g) Getting csvs from spark to local
+1. testdf.write.csv('s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbzltv20180328b.csv',header=True)
+2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbzltv20180328b.csv /home/hadoop/test/
+3. On local terminal: rsync -av gkabbz-ltv-02:/home/hadoop/test/ /Users/gkaberere/spark-warehouse (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
+
+
+To Do Items
+TODO 1. How to calculate a max date from a column and pass it to a new column
+TODO 2. Add how to persist() results for faster access
+TODO 3. Go through Jupyter notebooks and make sure all tests and progress have been documented here
+TODO 4. Naming conventions for dataframes
+TODO 5. Syntax for joins
+TODO 6. Similar statement to where x is in ('a', 'b', 'c') when filtering
+
 
