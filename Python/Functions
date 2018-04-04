@@ -1,0 +1,13 @@
+What are functions?
+
+- Functions are a set of instructions that you want to use repeatedly or are complex and better to be self-contained and called when needed.
+- It is a piece of code written to carry out a specified task
+- There are built in functions that come with python e.g print, len, input etc.
+- There are modules which are python programs that have specific set of functions. e.g. datetime module has functions related to date and time
+- Python allows you to write / build your own functions (powerful part of python)
+
+Building Your Own Function
+
+
+
+

@@ -1,0 +1,12 @@
+1. Importing Modules
+
+- There are two ways of importing modules
+    1 import random
+    2 from random import *
+
+If you use 1, the function would be random.randint(1,10)
+If you use 2, the function would be randint(1,10)
+
+My Best Practice: Use 1. Though writing the code is a bit longer, it's a lot more obvious that randint is a function of random for others.
+
+2.
