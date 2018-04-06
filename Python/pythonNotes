@@ -1,0 +1,48 @@
+1. Working With Files
+
+Opening Files
+There are two ways to open a file. One using the OPEN() function and the other using the "With" statement.
+Open() Function:
+    file = open('welcome.txt', 'wb')
+    date = file.read()
+    print(data)
+    file.close()
+
+With Statement:
+    with open('welcome.txt', 'wb') as file:
+        data = file.read()
+        print(data)
+
+PROGRAMMING DECLARATION: I will use the With statement exclusively as it removes the need to call file.close() and provides a way for ensuring cleanup is always used as it simplifies exception handling.
+
+file edit modes:
+r = read, w = write, a = append, b = open in binary, t = open in text mode, + = open for reading and writing, x = create new file, if already exists operation fails, wb = write binary mode
+
+2. Working With Dates - Using datetime Module
+import module:                                  import datetime
+current date:                                   datetime.date.today()
+current datetime:                               datetime.datetime.now()
+current time:
+    save current datetime in now variable:      now = datetime.datetime.now()
+    create variable that reads time from now:   time = datetime.datetime.time(now)
+year from today's date:                         year = datetime.date.today().year
+year from a date stored in var dateWanted:      year = dateWanted.year      -> same syntax for month and day
+Explicitly storing a date into a var:           dateStore = datetime.date(year=2011, month=1, day=2) will return 2011-01-02
+
+
+
+3. Using Requests Module
+Requests documentation can be found here: docs.python-requests.org/en/master/
+The requests module is great for downloading files from the web where you know the URL and there is no gating i.e. password acccess
+
+res = requests.get('http://site.com/file.txt')  -> will go and grab file.txt contents and store in a variable called res
+res.status_code                                 -> will return a status code of the request (200 = successful, ....)
+res.text                                        -> will pull the text from the file
+res.iter_content(200000)                        -> will work with specified bytes of the data (200000) in this case for writing to a file
+
+
+
+4. Working With Strings
+Populating a string with variables:             string = "I would like a variable right {} and {}".format(variable 1, variable 2)
+
+5. Using OS Module
