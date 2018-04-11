@@ -45,4 +45,16 @@ res.iter_content(200000)                        -> will work with specified byte
 4. Working With Strings
 Populating a string with variables:             string = "I would like a variable right {} and {}".format(variable 1, variable 2)
 
-5. Using OS Module
+5. Using OS Module and Shutil to Work With Files and Folders
+The OS module is great for working with files & folders
+
+Check current working directory:                os.getcwd()
+Change directory:                               os.chdir('/users/gkaberere/'
+Create a directory:                             os.makedirs('/users/gkaberere/testFolderCreate'
+Join different folders to create path:          os.path.join('/', folderLevel1, folderLevel2, folderLevel3)
+Find directory path in file path:               os.path.dirname('/Users/gkaberere/testfile.txt')
+Find file name or last section of file path:    os.path.basename('Users/gkaberere/testfile.txt')
+Find the folder contents :                      os.listdir('/users/gkaberere/Google Drive/Python')
+Copy a file to a new directory:                 shutil.copy('/users/gkaberere/test.txt', '/users/gkaberere/test/testtest.txt')sd
+Rename / Move a file to a/same directory:       shutil.move('/users/gkaberere/test.txt', '/users/gkaberere/testisdone.txt')
+Copy an entire folder with all contents:        shutil.copytree('/users/gkaberere/internet', '/users/internet backup')

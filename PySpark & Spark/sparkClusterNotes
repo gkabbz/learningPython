@@ -78,8 +78,8 @@ working with dates:                             df.select(year(df['dateColumn'])
 
 g) Getting csvs from spark to local
 1. testdf.write.csv('s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbzltv20180328b.csv',header=True)
-2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbzltv20180328b.csv /home/hadoop/test/
-3. On local terminal: rsync -av gkabbz-ltv-02:/home/hadoop/test/ /Users/gkaberere/spark-warehouse (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
+2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbzTestMRA.csv /home/hadoop/sparkAnalysis/sampleID
+3. On local terminal: rsync -av gkabbz-ltv-005:/home/hadoop/sparkAnalysis/sampleID/ /Users/gkaberere/spark-warehouse/sampleID (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
 
 
 To Do Items
