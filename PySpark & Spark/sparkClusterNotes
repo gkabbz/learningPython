@@ -1,35 +1,58 @@
 Spark Data Frame Basics
 
+Default Imports
+
+- from pyspark.sql import SparkSession:- To enable creating a spark session
+- from pyspark.sql.types import DateType, StructType, StructField, IntegerType, StringType, DecimalType, LongType:-  StructField and StructType are useful for defining schemas. The other types are useful for defining dates, strings, integer etc.
+- from datetime import datetime:- To help with working on dates and time
+- import pyspark.sql.functions as function
+    - useful functions: (col, udf, unix_timestamp, dayofmonth, hour, dayofyear, month, year, weekofyear, format_number, date_format,date_add, datediff, to_date, lit)
+
+
 1. Starting a Spark Session
 
-from pyspark.sql import SparkSession ##capitalization is important
-spark = SparkSession.builder.appName('selectedName').getOrCreate()  ## to start the session
-df = spark.read.parquet('s3://net-mozaws-prod-us-west-2-pipeline-data/telemetry-new-profile-parquet/v1/') ## if you tab after read. it will show you options available. If reading from directories, spark is finicky working with file paths with spaces so you may need to get rid of them.
-df = spark.read.csv('')
+    from pyspark.sql import SparkSession
+    spark = SparkSession.builder.appName('selectedName').getOrCreate()  ## to start the session
 
-2. Reading the dataFrame
+2. Reading a dataset into a spark session
+
+Reading Parquet files
+
+    df = spark.read.parquet('s3://net-mozaws-prod-us-west-2-pipeline-data/telemetry-new-profile-parquet/v1/') ## if you tab after read. it will show you options available. If reading from directories, spark is finicky working with file paths with spaces so you may need to get rid of them.
+
+Due to how Parquet files are updated, it may be beneficial to always merge schemas
+
+    df = spark.read.option('mergeSchema', 'true').parquet('s3://net-mozaws-prod-us-west-2-pipeline-data/telemetry-new-profile-parquet/v1/')
+
+Reading CSV Files
+
+    df = spark.read.csv('') ## used for reading a single csv or distributed file csvs stored within a folder
+
+3. Options while reading a dataset into a spark session
+
+    df = spark.read.csv('/folder/folder/file.csv', header = True/False, inferSchema=True/False, schema=schemaVariable)
+        inferSchema - read data and infer schema structure
+        header - whether a header is included in the file or if it isn't (false)
+        schema - define a specific schema for the data
+
+    Defining a schema
+
+    Sometimes data schema may not be in good form so you have to define it i.e. everything is saved as a string.
+    a) import type tools: from pyspark.sql.types import StructField, StringType, IntegerType, StructType
+    b) create list of structure fields - expected schema
+        schemaVariable = StructType([StructField('age', IntegerType(), True), (StructField('column2', StringType(), True))]) - True boolean is to allow whether a field can be Null
+    c) Clarify you want the data frame to use the defined schema structure
+        df = spark.read.parquet('s3://net-mozaws-prod-us-west-2-pipeline-data/telemetry-new-profile-parquet/v1/', schema=schemaVariable)
+
+
+4. Reading the dataFrame
 
 - show the data in the frame:       df.show()
 - show the schema:                  df.printSchema()
 - show the column names:            df.columns      ## attribute so no need for ()
 - get statistical summary of df:    df.describe().show ## statistical summary of the numeric columns in the dataframe
 
-3. Clarifying the schema ##sometimes data schema may not be in good form so you have to define it i.e. everything is saved as a string.
-
-a) import type tools
-from pyspark.sql.types import StructField, StringType, IntegerType, StructType
-
-b) create list of structure fields - expected schema
-data_schema = [StructField('age',IntegerType(),True), StructField('name',StringType(),True)] ##This means (for first part) column relates to is age, I want age to be integer type and boolean to allow whether field can be Null.
-
-c) Pass the data_schema into StructType
-final_struct = StructType(fields = data_schema)
-
-d) Clarify you want the data frame to use the defined schema structure
-
-df = spark.read.parquet('s3://net-mozaws-prod-us-west-2-pipeline-data/telemetry-new-profile-parquet/v1/', schema=final_struct)
-
-4. Selecting vs Grabbing Data
+5. Selecting vs Grabbing Data
 
 a) Working with columns
 - Returning a column object:                                        df['age']
@@ -75,12 +98,16 @@ importing functions:                            from pyspark.sql.functions impor
 working with dates:                             df.select(year(df['dateColumn'])).show()
 
 
-
 g) Getting csvs from spark to local
 1. testdf.write.csv('s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbzltv20180328b.csv',header=True)
-2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbzTestMRA.csv /home/hadoop/sparkAnalysis/sampleID
+2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/testUSClient.csv /home/hadoop/sparkAnalysis/usActivity
 3. On local terminal: rsync -av gkabbz-ltv-005:/home/hadoop/sparkAnalysis/sampleID/ /Users/gkaberere/spark-warehouse/sampleID (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
 
+
+h) Understanding a table
+- Get number of rows in a dataframe:                print len(df.columns)
+- Get number of partitions:                         df.rdd.getNumPartitions()
+- Get number of rows:                               df.count()
 
 To Do Items
 TODO 1. How to calculate a max date from a column and pass it to a new column

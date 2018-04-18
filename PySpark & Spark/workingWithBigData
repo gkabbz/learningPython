@@ -1,0 +1,36 @@
+- The purpose of this doc is to document my process as I worked through analysing two tables at Mozilla. One is the main summary table and the other the search clients daily.
+- After being able to access them and run queries on them, I was disappointed by the amount of time it took to query the tables. At first, I summized that it's slow because of the volume of data but then I thought, should it really be slow? After all Mozilla seems to be using the right technology i.e. files stored in parquet, ability to setup a 30 worker cluster, spark etc.
+- From research it looked like the way Mozilla had set themselves up was in line with other companies / recommended by big data practitioners. So why did it take so long?
+- Could it be that there's an art to querying big data warehouses / lakes that goes beyond the traditional approach most of us learn as we come up through the years predominantly working through SQL.
+- So I set out to find out.
+
+Table Characteristics
+Main Summary - as of Apr 16,2018
+1. Partitions: 748,923
+2. No. of columns: 392
+3. No. of rows: start 5:35 end 6:11 267,868,241,359
+
+Search Clients Daily - as of Apr 17, 2018
+1. Partitions: 64,799
+2. No. of columns: 30
+3. No. of rows: 111,281,366,874
+
+
+
+
+Working through command line vs through browser
+
+Search Clients Daily - df.count()
+Command line: 1 min 46 sec
+Jupyter: 1 min 22 sec
+
+
+
+Hardware
+
+
+
+read again:
+https://databricks.com/blog/2015/07/15/introducing-window-functions-in-spark-sql.html - Windows
+
+https://forums.databricks.com/questions/101/what-is-an-optimal-size-for-file-partitions-using.html : Parquet file sizes

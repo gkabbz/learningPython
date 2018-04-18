@@ -1,0 +1,8 @@
+Resources used:
+1. https://www.binpress.com/tutorial/manipulating-pdfs-with-python/167
+2. https://automatetheboringstuff.com/chapter13/
+3. PDFminer docs - http://pdfminer-docs.readthedocs.io/programming.html#overview
+
+- There seems to be two popular choices for extracting data from PDFs PDFminer and PyPDF2.
+- From the research it looks like PDFminer is more robust as it determines coordinates of objects in PDFs which should make it easier to define data locations in a PDF page. However, it does not work on python3 so there's a tradeoff to be had and not sure how it will fit in to my final code. But I'd rather have data accuracy and flexibility so I'm going to test drive it first and see if it does what I need.
+

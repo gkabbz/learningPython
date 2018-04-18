@@ -1,0 +1,47 @@
+Partitions
+
+- The magic sauce of distributed file systems.
+- Though data sources are read as a single source, in the background the data is stored in multiple files called partitions.
+- The partitions are grouped a specific way as the files are saved
+- When conducting analysis you are able to repartition to improve query times and performance
+- By default, partitions will specify 200 partitions unless otherwise specified. getNumPartitions will return 200 even if the dataset is small and may only have 3 files with actual data in them.
+
+Determining number of partitions in a dataframe:                df.rdd.getNumPartitions()
+Shrinking the number of partitions in a dataframe:              df.coalesce('number of partitions wanted')
+Increasing the number of partitions:                            df.repartition('no of partitions wanted')
+
+- The repartition algorithm does a full shuffle of the data and creates equal sized partitions of data. Coalesce combines existing partitions to avoid a full shuffle.
+
+Repartition by a specific column:                               df.repartition('colName1', 'colName2') - Likely partition the files with a file for each unique columnName value so long as there's less than 200.
+
+
+Notes from Research While Working Through Main Summary and Search Clients Daily
+
+- More numerous partitions allow work to be distributed among more workers, but fewer partitions allow work to be done in larger chunks (and often quicker)
+
+Using Partition Knowledge To Speed Up Analysis
+
+Table Analyzed: Search Clients Daily
+Number of records:
+Analysis Objective: Get descriptive statistics of median, percentile rank to define the distribution of searches / revenue by client ID.
+
+Table characteristics
+1. Partitions: 64,799
+2. No. of columns: 30
+3. No. of rows: 111,281,366,874
+
+Method
+1. Filtered the search_clients_daily table to specifically look at US. After filtering, table went from 111 Billion rows to 16.6 Billion rows. Approx 15%
+2. Created a dataframe that looked at unique activity by clientID for the US. This resulted in the table shrinking further to 246M as well as selected 10 specific columns.
+3. I then repartitioned this dataframe by clientID and then repartitioned the repartition into 9000 files from the 200 default it had.
+4. I then exported these files to see the size of each.
+5. Overall, I had 9000 files for a total of 21GB of data. Each file was approximately 27.3K records.
+6. I did some research around the ideal file size and looks like I went too small. File sizes should be around 1GB per databricks QA section (https://forums.databricks.com/questions/101/what-is-an-optimal-size-for-file-partitions-using.html) as well as other sources
+
+
+Resources
+
+https://techmagie.wordpress.com/2015/12/19/understanding-spark-partitioning/
+https://medium.com/parrot-prediction/partitioning-in-apache-spark-8134ad840b0
+https://hackernoon.com/managing-spark-partitions-with-coalesce-and-repartition-4050c57ad5c4
+https://blog.deepsense.ai/optimize-spark-with-distribute-by-and-cluster-by/
