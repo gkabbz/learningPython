@@ -1,0 +1,20 @@
+#### These are instructions for setting up S3 via the command line as well as a quick reference for common tasks ####
+
+
+Command Line
+
+1. Install the aws command line: brew install awscli --upgrade --user
+2. Creating a bucket: aws s3 mb s3://gkabbz-002
+3. Removing a bucket: aws s3 rb s3://gkabbz-9999 (if bucket is empty) | aws s3 rb s3://gkabbz-9999 --force (if not empty)
+4. Listing buckets:   aws s3 ls
+5. Listing bucket contents: aws s3 ls s3://gkabbz-002
+
+
+
+Resources
+https://docs.aws.amazon.com/cli/latest/userguide/using-s3-commands.html
+
+Python
+
+1. Install boto3 (AWS SDK for Python): pip install boto3
+2.

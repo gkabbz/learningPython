@@ -8,7 +8,7 @@ Table Characteristics
 Main Summary - as of Apr 16,2018
 1. Partitions: 748,923
 2. No. of columns: 392
-3. No. of rows: start 5:35 end 6:11 267,868,241,359
+3. No. of rows: start 5:35 end 6:11 267,868,241,359  When ran on the next day 268,553,671,239 meaning 685.5Million records added in the day
 
 Search Clients Daily - as of Apr 17, 2018
 1. Partitions: 64,799

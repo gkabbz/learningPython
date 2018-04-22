@@ -2,11 +2,11 @@ Spark Data Frame Basics
 
 Default Imports
 
-- from pyspark.sql import SparkSession:- To enable creating a spark session
-- from pyspark.sql.types import DateType, StructType, StructField, IntegerType, StringType, DecimalType, LongType:-  StructField and StructType are useful for defining schemas. The other types are useful for defining dates, strings, integer etc.
-- from datetime import datetime:- To help with working on dates and time
-- import pyspark.sql.functions as function
-    - useful functions: (col, udf, unix_timestamp, dayofmonth, hour, dayofyear, month, year, weekofyear, format_number, date_format,date_add, datediff, to_date, lit)
+    - from pyspark.sql import SparkSession:- To enable creating a spark session
+    - from pyspark.sql.types import DateType, StructType, StructField, IntegerType, StringType, DecimalType, LongType:-  StructField and StructType are useful for defining schemas. The other types are useful for defining dates, strings, integer etc.
+    - from datetime import datetime:- To help with working on dates and time
+    - import pyspark.sql.functions as function
+        - useful functions: (col, udf, unix_timestamp, dayofmonth, hour, dayofyear, month, year, weekofyear, format_number, date_format,date_add, datediff, to_date, lit)
 
 
 1. Starting a Spark Session
@@ -37,7 +37,7 @@ Reading CSV Files
 
     Defining a schema
 
-    Sometimes data schema may not be in good form so you have to define it i.e. everything is saved as a string.
+    Sometimes data schema may not be in good form so you have to define it e.g. everything is saved as a string.
     a) import type tools: from pyspark.sql.types import StructField, StringType, IntegerType, StructType
     b) create list of structure fields - expected schema
         schemaVariable = StructType([StructField('age', IntegerType(), True), (StructField('column2', StringType(), True))]) - True boolean is to allow whether a field can be Null
@@ -47,27 +47,27 @@ Reading CSV Files
 
 4. Reading the dataFrame
 
-- show the data in the frame:       df.show()
-- show the schema:                  df.printSchema()
-- show the column names:            df.columns      ## attribute so no need for ()
-- get statistical summary of df:    df.describe().show ## statistical summary of the numeric columns in the dataframe
+    - show the data in the frame:       df.show(5)
+    - show the schema:                  df.printSchema()
+    - show the column names:            df.columns      ## attribute so no need for ()
+    - get statistical summary of df:    df.describe().show ## statistical summary of the numeric columns in the dataframe
 
 5. Selecting vs Grabbing Data
 
 a) Working with columns
-- Returning a column object:                                        df['age']
-- Returning a column in a dataframe (more flexibility):             df.select('age')
-- Select multiple columns in a dataframe and show:                  df.select(['age', 'name']).show
-- Creating a new column:                                            df.withColumn('newage',df[age])
-- Renaming a column:                                                df.withColumnRenamed('age', 'myNewAge')
+    - Returning a column object:                                        df['age']
+    - Returning a column in a dataframe (more flexibility):             df.select('age')
+    - Select multiple columns in a dataframe and show:                  df.select(['age', 'name']).show
+    - Creating a new column:                                            df.withColumn('newage',df[age])
+    - Renaming a column:                                                df.withColumnRenamed('age', 'myNewAge')
 
 b) Working with rows
-df.head(2) - returns the first two rows in a dataframe with a list that you can index
-df.head(2)[0] - returns the first row of the two selected above
+    df.head(2) - returns the first two rows in a dataframe with a list that you can index
+    df.head(2)[0] - returns the first row of the two selected above
 
 c) Using SQL with dataframes
-Register the dataframe as a sql temporary view:                     df.createOrReplaceTempView('people')
-Query the temporary view:                                           results = spark.sql("SELECT * FROM people")
+    Register the dataframe as a sql temporary view:                     df.createOrReplaceTempView('people')
+    Query the temporary view:                                           results = spark.sql("SELECT * FROM people")
 
 d) Filter data
 - Filter a column by specific values (similar to sql):        df.filter("submission_date > 20170101").select('client_id','sap').show()
@@ -80,28 +80,45 @@ d) Filter data
 
 
 e) Group By and Aggregate Functions
-- Group by a dimension:                           df.groupBy("Company")
-- Group by a dimension and aggregate:             df.groupBy("Company").max().show()
-- Summing across rows:                            df.agg({'sales':'sum'}).show()
-- Group by and summing:                           1 - groupedData = df.groupBy('Company') ; 2 - Sum: groupedData.agg({'sales':'sum'})
-- Importing functions:                  from pyspark.sql.functions import countDistinct,avg,stddev (if you tab after import you'll see a list of functions available)
-- Count distinct:                                   df.select(countDistinct('sales')).show()
-- To alias:                                         df.select(countDistinct('sales').alias('average sales')).show()
-- Formatting data to remove decimals:              1. Import format_number from pyspark.sql.functions
-                                                   2. avgSales = df.select(countDistinct('sales').alias('average sales'))
-                                                   3. avgSales.select(format_number('average sales',2).show() - to 2 decimal places
-- order by column:                            df.orderBy("sales").show()
-- order by descending:                        df.orderBy(df['sales'].desc()).show()
+    Group by a dimension:                           df.groupBy("Company")
+    Group by a dimension and aggregate:             df.groupBy("Company").agg(sum(df.revenue).alias('revenue'), countDistinct(df.clientID).alias('customers'))
 
+    Summing across rows:                            df.agg({'sales':'sum'}).show()
+
+    Importing functions:                  from pyspark.sql.functions import countDistinct,avg,stddev (if you tab after import you'll see a list of functions available)
+
+    Count distinct:                                 df.select(countDistinct('sales')).show()
+    To alias:                                       df.select(countDistinct('sales').alias('average sales')).show()
+
+    Order by column:                                df.orderBy("sales").show()
+    Order by descending:                            df.orderBy(df['sales'].desc()).show()
+
+    Formatting data to remove decimals:             1. Import format_number from pyspark.sql.functions
+                                                    2. avgSales = df.select(countDistinct('sales').alias('average sales'))
+                                                    3. avgSales.select(format_number('average sales',2).show() - to 2 decimal places
+-
 f) Dates and TimeStamps
-importing functions:                            from pyspark.sql.functions import (dayofmonth, hour, dayofyear, month, year, weekofyear,format_number, date_format,date_add, datediff)
-working with dates:                             df.select(year(df['dateColumn'])).show()
+
+    importing functions:                            from pyspark.sql.functions import (dayofmonth, hour, dayofyear, month, year, weekofyear,format_number, date_format,date_add, datediff)
+    working with dates:                             df.select(year(df['dateColumn'])).show()
+
+Converting Date Stored as String to Date Format
+    1. Create a function
+        func = udf(lambda x: datetime.strptime(str(x), '%Y%m%d'), DateType())
+    2. Apply the function to a specific column in your dataframe
+    cleanedDates = df.withColumn('date', func(col('submissionDateS3')))
+
+
 
 
 g) Getting csvs from spark to local
-1. testdf.write.csv('s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbzltv20180328b.csv',header=True)
-2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/testUSClient.csv /home/hadoop/sparkAnalysis/usActivity
-3. On local terminal: rsync -av gkabbz-ltv-005:/home/hadoop/sparkAnalysis/sampleID/ /Users/gkaberere/spark-warehouse/sampleID (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
+
+ Not Using an S3 Bucket
+    1. testdf.write.csv('s3://net-mozaws-prod-us-west-2-pipeline-analysis/percentiles4.csv',header=True)
+    2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/percentiles5.csv /home/hadoop/sparkAnalysis/percentiles5
+    3. On local terminal: rsync -av gkabbz-ltv-005:/home/hadoop/sparkAnalysis/percentiles5 /Users/gkaberere/spark-warehouse/percentiles (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
+
+Using an S3 Bucket
 
 
 h) Understanding a table

@@ -1,2 +1,58 @@
 https://databricks.com/blog/2015/07/15/introducing-window-functions-in-spark-sql.html
 https://ncar.github.io/PySpark4Climate/tutorials/statistical-techniques/median/
+
+Why is the window function's important?
+
+- Built in functions in SQL or most query languages usually take values from a single row as an input and they generate a single return value for every input row. e.g Round, Substring, parse
+- Aggregation functions such as sum, max etc operate on a group of rows and calculate a single return for every group
+- However, sometimes you want to perform a calculation that looks across a group but returns a value for each individual row. e.g. Rank, Percentile. This is where the Window function comes in.
+- A window function calculates a value for every input row of a table based on a group of rows called the Frame.
+
+
+There's a great example for figuring out the highest performing products from databricks found here: https://databricks.com/blog/2015/07/15/introducing-window-functions-in-spark-sql.html
+
+The issue I'm facing however, is I would like to figure out the distribution of a large dataset (over 250 million rows) using PySpark. I'd like to figure out median and percentiles in 10s.
+
+Initially I attempted the df.approxQuantile('x',[0.5],0.25) found here : https://stackoverflow.com/questions/31432843/how-to-find-median-and-quantiles-using-spark but kept getting errors. Can't remember the errors, just know I wasn't able to accomplish my task.
+
+Steps
+1. Defining a window
+Using sample file: testMediansPercentiles.csv
+
+In this example, I was looking across my entire dataset but you could partition by multiple columns as well.
+windowDetails = Window.partitionBy(df['Searches']).orderBy(df['Searches'])
+
+2. Percent Ranking over the Window
+
+df2 = df.select('searches', percent_rank().over(WindowDetails).alias('percent_rank'), round(percent_rank().over(windowDetails),2).alias('percentileRounded'))
+
+I initially calculated it this way as I didn't trust the rounding function but in the production code, I only used the percentileRounded column. This would help minimize run time.
+
+3. Grouping the percentile into ranges
+
+Since I was looking for the distribution of the data, I then grouped it in ranges of ten and counted the number of records in each.
+
+df3 = df2.select(df2.Searches,
+                 df2.percent_rank, df2.percentileRounded,
+                 when(((df2.percentileRounded >= 0) & (df2.Searches.isNull())),'null')
+                .otherwise(when(((df2.percentileRounded >= 0) & (df2.percentileRounded <= 0.10) & (df2.Searches.isNotNull())),'0-10')
+                .otherwise(when(((df2.percentileRounded > 0.10) & (df2.percentileRounded <= 0.20)),'11-20')
+                .otherwise(when(((df2.percentileRounded > 0.20) & (df2.percentileRounded <= 0.30)),'20-30')
+                .otherwise(when(((df2.percentileRounded > 0.30) & (df2.percentileRounded <= 0.40)),'30-40')
+                .otherwise(when(((df2.percentileRounded > 0.40) & (df2.percentileRounded <= 0.50)),'40-50')
+                .otherwise(when(((df2.percentileRounded > 0.50) & (df2.percentileRounded <= 0.60)),'50-60')
+                .otherwise(when(((df2.percentileRounded > 0.60) & (df2.percentileRounded <= 0.70)),'60-70')
+                .otherwise(when(((df2.percentileRounded > 0.70) & (df2.percentileRounded <= 0.80)),'70-80')
+                .otherwise(when(((df2.percentileRounded > 0.80) & (df2.percentileRounded <= 0.90)),'80-90')
+                .otherwise(when(((df2.percentileRounded > 0.90)),'90-100')
+                .otherwise('other'))))))))))).alias('percentileRange'))
+
+4. The end result - Ta Da
+
+
+
+
+
+Random Issues
+- Initially my searches were in DecimalType. When I did percent_rank everything came back as zero. Changing it to float resolved it.
+- I then had an issue where ranges 11-20 and 21-30 did not show up. (still trying to figure this one out)
