@@ -1,0 +1,146 @@
+What are loops?
+- In general, statements are executed sequentially i.e. statement 1 executed first 2 second etc
+- In situations where you need to execute a block of code several number of times, that's where loops come in.
+- A loop statement allows us to execute a statement or a group of statements multiple times.
+
+Types of Loops
+1. For Loops
+- Executes a sequence of statements multiple times and abbreviates the code that manages the loop variable
+
+2. While Loops
+- Repeats a statement or group of statements while a given condition is TRUE. It tests the condition before executing the loop body.
+
+3 Nested Loops
+- Using one or more loops inside another
+
+Structure of a Loop Statement
+
+1. For Loop
+
+a) Basic Structure:
+for loopVariableName in Condition:
+    Loop body / code to be executed
+
+E.g.
+numbers = [10, 39, 49, 59, 32093, 293, 230, 2384, 2382938, 832983, 832983, 8457, 54, 67, 458, 347, 489, 31, 78, 464, 987, 34]
+for x in numbers:
+   print(x)
+
+Result - it will print each of the numbers in the list since there is no condition
+
+b) For Loop with Condition:
+Let's add a condition. Let's say we want to print only the numbers that are lower than 200.
+
+numbers = [10, 39, 49, 59, 32093, 293, 230, 2384, 2382938, 832983, 832983, 8457, 54, 67, 458, 347, 489, 31, 78, 464, 987, 34]
+for x in numbers:
+   if (x > 200):
+       break
+   else:
+       print(x)
+
+This works partially. It appears it goes through the list sequentially and as soon as it hits the 32,093 it breaks. Therefore the last number (34) which meets the condition (as well as others) don't get printed out.
+
+What if we tried a while
+
+numbers = [10, 39, 49, 59, 32093, 293, 230, 2384, 2382938, 832983, 832983, 8457, 54, 67, 458, 347, 489, 31, 78, 464, 987, 34]
+for x in numbers:
+   while (x > 200):
+       break
+   else:
+       print(x)
+
+This does the trick. It prints all the numbers that are under 200. Unlike if it does not break on the first instance where the condition is not met.
+
+2. While Loops
+
+Similar to above 1b
+
+
+3. Nested Loops
+Let's take the example where we want to select even numbers from a list and only return them if they are less than 237. The code would look something like this.
+
+
+numbers = [
+    951, 402, 984, 651, 360, 69, 408, 319, 601, 485, 980, 507, 725, 547, 544,
+    615, 83, 165, 141, 501, 263, 617, 865, 575, 219, 390, 984, 592, 236, 105, 942, 941,
+    386, 462, 47, 418, 907, 344, 236, 375, 823, 566, 597, 978, 328, 615, 953, 345,
+    399, 162, 758, 219, 918, 237, 412, 566, 826, 248, 866, 950, 626, 949, 687, 217,
+    815, 67, 104, 58, 512, 24, 892, 894, 767, 553, 81, 379, 843, 831, 445, 742, 717,
+    958, 609, 842, 451, 688, 753, 854, 685, 93, 857, 440, 380, 126, 721, 328, 753, 470,
+    743, 527
+]
+
+# Print out all even numbers in same order as received.
+# Don't print any numbers after 237
+
+for number in numbers:
+    if number < 237:
+        if number % 2 == 0:
+            print(number)
+        else:
+            pass
+    else:
+        pass
+
+We would have two conditions one after the other. In this instance, the block of code would evaluate if a number was less than 237 and if it was then evaluate if it returns a remainder when divided by 2. If it doesn't it prints the number. Otherwise it passes on to the next number.
+
+Using pass raises an important question. When do you know whether to use pass, break, continue etc?
+
+Break, Continue, Pass
+1. Break
+- Break provides you with an opportunity to exit out of a loop when an external condition is triggered.
+
+In example below we want to print 1 - 4 and stop the code once number = 5
+
+number = 0
+
+for number in range(10):
+   number = number + 1
+
+   if number == 5:
+      break    # break here
+
+   print('Number is ' + str(number))
+
+print('Out of loop')
+
+2. Continue
+- Continue statement gives you the option to skip over the part of a loop where an external condition is triggered but to go on and complete the rest of the loop. ie. it will skip over the external condition and continue along.
+
+In our example above where the code stopped at 4, the code would continue till 10 but skip over 5
+
+number = 0
+
+for number in range(10):
+   number = number + 1
+
+   if number == 5:
+      continue    # continue here
+
+   print('Number is ' + str(number))
+
+print('Out of loop')
+
+3. Pass
+- The pass statement allows you to handle an external condition triggered by passing over the condition without the loop being impacted in any way. It makes the external condition triggered irrelevant and runs the code as if it wasn't there.
+- Pass is useful as a placeholder especially when working with new code and when thinking what you'd like to put in it's place.
+
+In our example above we would get a print of all the numbers 1 - 10 despite the condition entered when we use pass.
+
+number = 0
+
+for number in range(10):
+   number = number + 1
+
+   if number == 5:
+      pass    # pass here
+
+   print('Number is ' + str(number))
+
+print('Out of loop')
+
+
+Resources
+https://www.tutorialspoint.com/python/python_loops.htm
+https://www.learnpython.org/en/Loops
+https://www.digitalocean.com/community/tutorials/how-to-use-break-continue-and-pass-statements-when-working-with-loops-in-python-3

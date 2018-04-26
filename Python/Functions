@@ -5,9 +5,98 @@ What are functions?
 - There are built in functions that come with python e.g print, len, input etc.
 - There are modules which are python programs that have specific set of functions. e.g. datetime module has functions related to date and time
 - Python allows you to write / build your own functions (powerful part of python)
+- In python all functions are treated as objects
 
 Building Your Own Function
+- In python user defined functions can take four different types of arguments.
+- The argument types and their meanings are pre-defined and can't be changed.
+- But a developer can follow these pre-defined rules to make their own custom functions.
+- The four types of arguments are:
+    1. Default arguments
+    2. Required arguments
+    3. Keyword arguments
+    4. Variable number of arguments
 
+Function Structure
+The basic steps for writing a user-defined function are:
+1. Declare function with keyword def followed by function name
+    def thisIsMyFunctionName
+2. Write arguments inside parentheses and end with a colon
+    def thisIsMyFunctionName(arg1, arg2, arg3, ...):
+3. Add the program statements to be executed
+    def thisIsMyFunctionName(arg1, arg2, arg3, ...):
+        print (arg1)
+4. End the function with / without return statement
+    def thisIsMyFunctionName(arg1, arg2, arg3, ...):
+        print (arg1)
+        return;
 
+1. Default Arguments
+- Python has a different way of representing syntax and default values for a function argument
+- Default values are the values the function will take if no argument is passed during function call
+- Default value is assigned by using the assignment = operator
+
+e.g. def defaultArg(name, msg = "Hello!")   Msg parameter has a default value Hello!
+
+Working Python Example:
+
+def defArgFunc (empName, empRole = 'Manager'):
+    print("Emp Name: ", empName)
+    print("Emp role: ", empRole)
+    return;
+
+# Call function with default argument
+defArgFunc(empName = 'Nick')
+
+#Overwrite the default argument
+defArgFunc(empName = 'Nick', empRole='CEO')
+
+2. Required Arguments
+- Mandatory arguments of a function
+- Must be passed in correct number and order during a function call
+
+e.g. def requiredArg (str, num):     A string and a number will have to be passed at function call or function won't work
+
+def reqargument (empname, emprole):
+    print('Emp Name: ', empname)
+    print('Emp Role: ', emprole)
+    return;
+
+reqargument('Kevin', 'Manager')
+
+3. Keyword Arguments
+- Using keywords is similar to required arguments but keywords can easily be mapped with the function arguments allowing flexibility if order given for keywords is not maintained
+
+eg. def keywordArg(name,role):
+Function Call: keywordArg(name = 'Tom', role = 'Manager')
+or keywordArg(role = 'Manager', name = 'Tom')     Both methods would work in a keyword argument but not in a required argument
+
+def keyargument (empname, emprole):
+    print('Emp Name: ', empname)
+    print('Emp Role: ', emprole)
+    return;
+
+keyargument (empname = 'Kevin', emprole = 'Manager')
+
+4. Variable Number of Arguments
+- Useful for when we don't know number of arguments that will be passed to a fucntion or we can have a design where any number of arguments can be passed based on the requirement
+
+def varLengthArgs(*varargs):
+function call: varLengthArgs(30,40,50,60)
+
+Note the * is important to the function working
+
+def varLenArgFunc(*varvallist ):
+   print ("The Output is: ")
+   for varval in varvallist:
+      print (varval)
+   return;
+print("Calling with single value")
+varLenArgFunc(55)
+print("Calling with multiple values")
+varLenArgFunc(50,60,70,80)
+
+Resources:
+https://www.codementor.io/kaushikpal/user-defined-functions-in-python-8s7wyc8k2
 
 
