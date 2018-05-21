@@ -80,12 +80,19 @@ d) Filter data
 
 
 e) Group By and Aggregate Functions
+First you need to make sure the functions you want to use have been imported
+
+    Importing functions:                  from pyspark.sql.functions import countDistinct,avg,stddev (if you tab after import you'll see a list of functions available)
+
+Grouping Data
     Group by a dimension:                           df.groupBy("Company")
     Group by a dimension and aggregate:             df.groupBy("Company").agg(sum(df.revenue).alias('revenue'), countDistinct(df.clientID).alias('customers'))
 
+Functions
+
+
     Summing across rows:                            df.agg({'sales':'sum'}).show()
 
-    Importing functions:                  from pyspark.sql.functions import countDistinct,avg,stddev (if you tab after import you'll see a list of functions available)
 
     Count distinct:                                 df.select(countDistinct('sales')).show()
     To alias:                                       df.select(countDistinct('sales').alias('average sales')).show()
@@ -115,8 +122,8 @@ g) Getting csvs from spark to local
 
  Not Using an S3 Bucket
     1. testdf.write.csv('s3://net-mozaws-prod-us-west-2-pipeline-analysis/percentiles4.csv',header=True)
-    2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/percentiles5.csv /home/hadoop/sparkAnalysis/percentiles5
-    3. On local terminal: rsync -av gkabbz-ltv-005:/home/hadoop/sparkAnalysis/percentiles5 /Users/gkaberere/spark-warehouse/percentiles (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
+    2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/dailyDAU2017JanApr.csv /home/hadoop/sparkAnalysis/dailyDAU2017JanApr
+    3. On local terminal: rsync -av gkabbz-ltv-002:/home/hadoop/sparkAnalysis/dailyDAU2017SepDec /Users/gkaberere/spark-warehouse/ (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
 
 Using an S3 Bucket
 

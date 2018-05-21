@@ -6,9 +6,9 @@ Series
 
 1. A series is a one dimensional labelled array (can be accessed via an index) capable of holding any data type.
 e.g. In table below is a series, the index is the row columns (0,1,2)
-0   A
-1   B
-2   C
+    0   A
+    1   B
+    2   C
 2. If an index is not defined or called, one is created with a value = 0 - len(data)-1. Therefore for most files, you don't necessary need to define an index.
 3. If data is stored in a dictionary pandas will automatically convert the keys into an index. (Question: What if you don't want to?)
 4. A series is like a dict, you can get and set values by index label
@@ -23,6 +23,25 @@ Dataframe
 Therefore a dict of series plus a specific index will discard data not matching up to the passed index.
 
 6. For me - when opening csv's my format will be
-data = pd.read_csv('file location', sep='', header=None, index_col=None, usecols=None, skiprows=None)
-ie. what's the file, what's the separator, are you defining column labels, are you defining row labels(index), are you skipping any columns, are you skipping any rows
+data = pd.read_csv('file location', sep='', header=None, names=columnNames, index_col=None, usecols=None, skiprows=None)
+ie. 'file location' - what's the file
+sep - what's the separator
+header - are you defining column labels from the file
+names - are you specifying names for the columns (names stored in a list)
+index - are you defining row labels
+usecols - are you skipping any columns
+skiprows - are you skipping any rows
 
+Example:
+columnNames = ['browser', 'country', 'date', 'deviceType', 'share']
+df = pd.read_csv(tempDailyFile, sep=',', header=None, names=columnNames, index_col=None, usecols=None, skiprows=None)
+
+
+Write Better Notes for below entries
+- if you want to see five rows of the dataframe to get a sense of the structure print(df.head(5))
+
+
+
+TODO: learn to view data frame schemas
+TODO: learn to append to a dataframe in memory
+TODO: learn to
