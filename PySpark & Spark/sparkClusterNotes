@@ -77,7 +77,8 @@ d) Filter data
 - Grab a specific row instance:                               df.filter(df['low'] == 197.16).show()
 - To collect data:                                            results = df.filter(df['low'] == 197.16).collect()
 - Select Max, Min, Avg, Median in column:                     df.agg({'colName' : 'max'})
-
+- Filter for items contained in a list                         List : last5Versions = [55,56,57,58,59]
+                                                                      aDAURecent5Versions = aDAUVersion.filter(aDAUVersion.max_app_version_trunc.isin(last5Versions))
 
 e) Group By and Aggregate Functions
 First you need to make sure the functions you want to use have been imported
@@ -121,9 +122,9 @@ Converting Date Stored as String to Date Format
 g) Getting csvs from spark to local
 
  Not Using an S3 Bucket
-    1. testdf.write.csv('s3://net-mozaws-prod-us-west-2-pipeline-analysis/percentiles4.csv',header=True)
-    2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/dailyDAU2017JanApr.csv /home/hadoop/sparkAnalysis/dailyDAU2017JanApr
-    3. On local terminal: rsync -av gkabbz-ltv-002:/home/hadoop/sparkAnalysis/dailyDAU2017SepDec /Users/gkaberere/spark-warehouse/ (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
+    1. testdf.write.csv('s3://net-mozaws-prod-us-west-2-pipeline-analysis/palomar201712/data.csv',header=True)
+    2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/palomar201712/data.csv /home/hadoop/sparkAnalysis/palomar201712
+    3. On local terminal: rsync -av gkabbz-ltv-001:/home/hadoop/sparkAnalysis/aprDAUBySampleIDCountryOS/ /Users/gkaberere/spark-warehouse/aprDAUBySampleIDCountryOS (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
 
 Using an S3 Bucket
 
