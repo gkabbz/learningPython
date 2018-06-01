@@ -122,9 +122,9 @@ Converting Date Stored as String to Date Format
 g) Getting csvs from spark to local
 
  Not Using an S3 Bucket
-    1. testdf.write.csv('s3://net-mozaws-prod-us-west-2-pipeline-analysis/palomar201712/data.csv',header=True)
-    2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/palomar201712/data.csv /home/hadoop/sparkAnalysis/palomar201712
-    3. On local terminal: rsync -av gkabbz-ltv-001:/home/hadoop/sparkAnalysis/aprDAUBySampleIDCountryOS/ /Users/gkaberere/spark-warehouse/aprDAUBySampleIDCountryOS (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
+    1. testdf.write.csv('s3://net-mozaws-prod-us-west-2-pipeline-analysis/palomar201804/data.csv',header=True)
+    2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbz/palomar/activeDays.csv /home/hadoop/sparkAnalysis/palomar/activeDays
+    3. On local terminal: rsync -av gkabbz-ltv-001:/home/hadoop/sparkAnalysis/palomar/activeDays/ /Users/gkaberere/spark-warehouse/palomar/activeDays (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
 
 Using an S3 Bucket
 

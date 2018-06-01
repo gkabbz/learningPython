@@ -1,0 +1,15 @@
+This doc captures learnings on how to efficiently work with dates in Python
+
+Unix Time
+- In some databases, you may find dates stored as integers / long. e.g. 17195, 17273 or 1485648000, 1492387200.
+- This format is unix time and it is a representation of time elapsed since the unix epoch (which was Jan 1 1970)
+
+    Converting unix time to date format
+    - If stored as a 5 digit integer:
+        Multiply by 86400 (no. of seconds in a day: 17195 * 86400 = 1485648000
+    - Once it is in the 10 digit unix epoch time format then convert to date
+        In Pyspark:
+        - from_unix_time('columnName'.cast(DateType()))
+        e.g testInstallCalc = testInstallCalc.withColumn('installDate', from_unixtime('unixInstallDate').cast(DateType()))
+
+
