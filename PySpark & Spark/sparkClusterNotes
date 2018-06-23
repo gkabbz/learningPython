@@ -123,9 +123,9 @@ g) Getting csvs from spark to local
 
  Not Using an S3 Bucket
     1. testdf.write.csv('s3://net-mozaws-prod-us-west-2-pipeline-analysis/palomar201804/data.csv',header=True)
-    2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbz/weeklyReportingDimMar2018.csv /home/hadoop/sparkAnalysis/weeklyReporting/dimensioned/Mar2018
-    3. On local terminal: rsync -av gkabbz-ltv-001:/home/hadoop/sparkAnalysis/weeklyReporting/dimensioned/Mar2018 /Users/gkaberere/spark-warehouse/weeklyReporting/dimensioned/Mar2018 (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
-
+    2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbz/installsMay2018.csv /home/hadoop/sparkAnalysis/may2018Installs
+    3. On local terminal: rsync -av gkabbz-ltv-001:/home/hadoop/sparkAnalysis/may2018Installs /Users/gkaberere/spark-warehouse/ (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
+1
 Transfer file from local to ec2
 rsync -anv /Users/gkaberere/Google\ Drive/Python/Github/telemetryQueries gkabbz-ltv-001:/home/hadoop/sparkAnalysis/telemetryQueries
 

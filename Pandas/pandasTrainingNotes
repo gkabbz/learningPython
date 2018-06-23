@@ -37,6 +37,17 @@ columnNames = ['browser', 'country', 'date', 'deviceType', 'share']
 df = pd.read_csv(tempDailyFile, sep=',', header=None, names=columnNames, index_col=None, usecols=None, skiprows=None)
 
 
+7. Appending multiple dataframes
+Appending one / more dataframes to each other is done using the .append function
+e.g. combinedDF = df1.append([df2,df3,df4,df5], ignore_index=True, verify_integrity=False)
+
+ignore_index - True means you dont want the headers of the df you are appending to be included
+verify_integrity - If set to true, it will raise ValueError if your new index results in duplicates. I think this is more important when you are using a specific column as the index
+
+8. Functions I find useful
+See unique values in a column - df['column'].drop_duplicates()
+
+
 Write Better Notes for below entries
 - if you want to see five rows of the dataframe to get a sense of the structure print(df.head(5))
 
