@@ -1,0 +1,3 @@
+- Registering functions as UDFs and applying them to dataframe columns - https://changhsinlee.com/pyspark-udf/
+- Cleaning up url encoding - https://stackoverflow.com/questions/16566069/url-decode-utf-8-in-python
+-

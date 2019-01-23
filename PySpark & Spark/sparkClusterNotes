@@ -84,7 +84,7 @@ e) Group By and Aggregate Functions
 First you need to make sure the functions you want to use have been imported
 
     Importing functions:                  from pyspark.sql.functions import countDistinct,avg,stddev (if you tab after import you'll see a list of functions available)
-
+[
 Grouping Data
     Group by a dimension:                           df.groupBy("Company")
     Group by a dimension and aggregate:             df.groupBy("Company").agg(sum(df.revenue).alias('revenue'), countDistinct(df.clientID).alias('customers'))
@@ -117,19 +117,25 @@ Converting Date Stored as String to Date Format
     cleanedDates = df.withColumn('date', func(col('submissionDateS3')))
 
 
-
-
 g) Getting csvs from spark to local
 
  Not Using an S3 Bucket
     1. testdf.write.csv('s3://net-mozaws-prod-us-west-2-pipeline-analysis/palomar201804/data.csv',header=True)
-    2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbz/installsMay2018.csv /home/hadoop/sparkAnalysis/may2018Installs
-    3. On local terminal: rsync -av gkabbz-ltv-001:/home/hadoop/sparkAnalysis/may2018Installs /Users/gkaberere/spark-warehouse/ (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
-1
+    2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbz/weeklyReporting/Dimensioned/20190110-20190110.csv /home/hadoop/sparkAnalysis/weeklyReporting/dimensioned/20190110-20190110
+    3. On local terminal: rsync -av gkabbz-001:/home/hadoop/sparkAnalysis/weeklyReporting/dimensioned/20190110-20190110 /Users/gkaberere/spark-warehouse/weeklyReporting/dimensionedFinal (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
+
+
+
 Transfer file from local to ec2
-rsync -anv /Users/gkaberere/Google\ Drive/Python/Github/telemetryQueries gkabbz-ltv-001:/home/hadoop/sparkAnalysis/telemetryQueries
+-- uploading code
+rsync -av /Users/gkaberere/Google\ Drive/Github/marketing-analytics gkabbz-001:/home/hadoop/sparkAnalysis/code
+-- uploading files
+rsync -av /users/gkaberere/spark-warehouse/testSnippet/testSnippet/snippetsNightlyTestDataNov19-25.csv gkabbz-001:/home/hadoop/sparkAnalysis/testSnippet
+aws s3 sync /home/hadoop/sparkAnalysis/testSnippet s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbz/testSnippet
 
+gsutil cp /Users/gkaberere/spark-warehouse/weeklyReporting/dimensionedFinal/20190110-20190110Cleaned.csv gs://gkabbz-upload
 
+rsync -av /users/gkaberere/spark-warehouse/testSnippet/testSnippet gkabbz-001:/home/hadoop/sparkAnalysis/testSnippet
 Using an S3 Bucket
 
 
@@ -147,3 +153,9 @@ TODO 5. Syntax for joins
 TODO 6. Similar statement to where x is in ('a', 'b', 'c') when filtering
 
 
+rsync -av gkabbz-001:/home/hadoop/sparkAnalysis/code /Users/gkaberere/Google\ Drive/Github/marketing-analytics
+
+Not Using an S3 Bucket
+    1. testdf.write.csv('s3://net-mozaws-prod-us-west-2-pipeline-analysis/palomar201804/data.csv',header=True)
+    2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbz/testSnippet/testJoin3.csv /home/hadoop/sparkAnalysis/testSnippet
+    3. On local terminal: rsync -av gkabbz-001:/home/hadoop/sparkAnalysis/testSnippet /Users/gkaberere/spark-warehouse/testSnippet (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save
