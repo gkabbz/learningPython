@@ -121,8 +121,8 @@ g) Getting csvs from spark to local
 
  Not Using an S3 Bucket
     1. testdf.write.csv('s3://net-mozaws-prod-us-west-2-pipeline-analysis/palomar201804/data.csv',header=True)
-    2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbz/weeklyReporting/Dimensioned/20190221-20190224.csv /home/hadoop/sparkAnalysis/weeklyReporting/dimensioned/20190221-20190224
-    3. On local terminal: rsync -av gkabbz-001:/home/hadoop/sparkAnalysis/weeklyReporting/dimensioned/20190221-20190224 /Users/gkaberere/spark-warehouse/weeklyReporting/dimensionedFinal (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
+    2. In atmo node terminal: aws s3 sync s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbz/weeklyReporting/Dimensioned/20190225-20190303.csv /home/hadoop/sparkAnalysis/weeklyReporting/dimensioned/20190225-20190303
+    3. On local terminal: rsync -av gkabbz-001:/home/hadoop/sparkAnalysis/weeklyReporting/dimensioned/20190225-20190303 /Users/gkaberere/spark-warehouse/weeklyReporting/dimensionedFinal (gkabbz-ltv-02 = atmo node ssh name, /users/gkaberere/spark-warehouse = folder I want to save to)
 
 
 
@@ -133,7 +133,7 @@ rsync -av /Users/gkaberere/Google\ Drive/Github/marketing-analytics gkabbz-001:/
 rsync -av /users/gkaberere/spark-warehouse/testSnippet/testSnippet/snippetsNightlyTestDataNov19-25.csv gkabbz-001:/home/hadoop/sparkAnalysis/testSnippet
 aws s3 sync /home/hadoop/sparkAnalysis/testSnippet s3://net-mozaws-prod-us-west-2-pipeline-analysis/gkabbz/testSnippet
 
-gsutil cp /Users/gkaberere/spark-warehouse/weeklyReporting/dimensionedFinal/20190221-20190224Cleaned.csv gs://gkabbz-upload
+gsutil cp /Users/gkaberere/spark-warehouse/weeklyReporting/dimensionedFinal/20190225-20190303Cleaned.csv gs://gkabbz-upload
 
 rsync -av /users/gkaberere/spark-warehouse/testSnippet/testSnippet gkabbz-001:/home/hadoop/sparkAnalysis/testSnippet
 Using an S3 Bucket
