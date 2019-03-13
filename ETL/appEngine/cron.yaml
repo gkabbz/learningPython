@@ -1,0 +1,6 @@
+cron:
+- description : ingest next year names
+  url : /ingest
+  schedule: every 5 mins
+  timezone: US/Eastern
+  target: names

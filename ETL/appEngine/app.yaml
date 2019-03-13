@@ -1,0 +1,18 @@
+runtime: python
+env: flex
+entrypoint: gunicorn -b :$PORT app:app --timeout 120
+service: names
+manual_scaling:
+  instances: 1
+
+#[START env]
+#env_variables:
+#    CLOUD_STORAGE_BUCKET: gkabbz-learn
+#[END env]
+
+handlers:
+- url: /ingest
+  script: app.app
+
+- url: /.*
+  script: app.app
