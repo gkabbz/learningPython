@@ -52,6 +52,42 @@ schema = [
     bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
 ]# define schema in line
 
+# Create a nested table
+from google.cloud import bigquery
+
+data = {"id":"1","first_name":"John","last_name":"Doe","dob":"1968-01-22","addresses":[{"status":"current","address":"123 First Avenue","city":"Seattle","state":"WA","zip":"11111","numberOfYears":"1"},{"status":"previous","address":"456 Main Street","city":"Portland","state":"OR","zip":"22222","numberOfYears":"5"}]}
+data2 = {"id":"2","first_name":"Jane","last_name":"Doe","dob":"1980-10-16","addresses":[{"status":"current","address":"789 Any Avenue","city":"New York","state":"NY","zip":"33333","numberOfYears":"2"},{"status":"previous","address":"321 Main Street","city":"Hoboken","state":"NJ","zip":"44444","numberOfYears":"3"}]}
+
+
+client = bigquery.Client(project='ga-mozilla-org-prod-001')
+dataset_ref = client.dataset('leanPlum')
+
+schema = [
+    bigquery.SchemaField("id", "STRING", mode="NULLABLE"),
+    bigquery.SchemaField("first_name", "STRING", mode="NULLABLE"),
+    bigquery.SchemaField("last_name", "STRING", mode="NULLABLE"),
+    bigquery.SchemaField("dob", "DATE", mode="NULLABLE"),
+    bigquery.SchemaField(
+        "addresses",
+        "RECORD",
+        mode="REPEATED",
+        fields=[
+            bigquery.SchemaField("status", "STRING", mode="NULLABLE"),
+            bigquery.SchemaField("address", "STRING", mode="NULLABLE"),
+            bigquery.SchemaField("city", "STRING", mode="NULLABLE"),
+            bigquery.SchemaField("state", "STRING", mode="NULLABLE"),
+            bigquery.SchemaField("zip", "STRING", mode="NULLABLE"),
+            bigquery.SchemaField("numberOfYears", "STRING", mode="NULLABLE"),
+        ],
+    ),
+]
+table_ref = dataset_ref.table("test_nested_table")
+table = bigquery.Table(table_ref, schema=schema)
+table = client.create_table(table)  # API request
+
+print("Created table {}".format(table.full_table_id))
+
+
 # TODO: How to define schema using a json file
 tableName = 'helloTable'
 tableRef = datasetRef.table(tableName)
@@ -122,13 +158,13 @@ fileName = '/Users/gkaberere/spark-warehouse/weeklyReporting/dimensionedFinal/20
 datasetID = 'testDataset2'
 tableID = 'helloWorld2'
 
-datasetRef = client.dataset(datasetID) # create a dataset reference using a chosen dataset ID
-table_ref = datasetRef.table(tableID) # create a table reference using a chosen table ID
-job_config = bigquery.LoadJobConfig() # load job call
+datasetRef = client.dataset(datasetID)  # create a dataset reference using a chosen dataset ID
+table_ref = datasetRef.table(tableID)  # create a table reference using a chosen table ID
+job_config = bigquery.LoadJobConfig()  # load job call
 job_config.source_format = bigquery.SourceFormat.CSV
 job_config.skip_leading_rows = 1
-job_config.autodetect = True # auto detect schema
-job_config.max_bad_records = 20 # number of bad records allowed before job fails
+job_config.autodetect = True  # auto detect schema
+job_config.max_bad_records = 20  # number of bad records allowed before job fails
 
 
 with open(fileName, 'rb') as source_file:

@@ -1,0 +1,30 @@
+# Good Resource - https://realpython.com/python-virtual-environments-a-primer/
+# Good resource - pyenv - https://realpython.com/intro-to-pyenv/
+
+To setup pyenv environment
+1. pyenv virtualenv 3.8.1 iex-stock-data
+2. Go into directory
+3. pyenv local iex-stock-data (this will set it for the directory only)
+4. To deactivate: pyenv local system
+
+After doing this, I got into a problem where I would install the package via command line
+but it wouldn't be available in Pycharm. Need to set it up as a virtualenv to be able
+to work seemlessly between the terminal and the IDE
+# Good Resource - https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-with-Python-3
+
+1. To install virtual environment
+virtualenv venv --python=python3
+    if you have a pyenv version already setup
+    virtualenv venv --python=/users/gkaberere/.pyenv/versions/iex-stock-data/bin/python
+
+2. To activate virtual environment
+    source venv/bin/activate
+
+3. To deactivate
+    deactivate
+
+4. To delete
+    rm -rf venv
+
+
+
