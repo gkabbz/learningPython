@@ -29,3 +29,9 @@ To mount the storage drive you need to:
 8. Install qBittorrent
 9. Mount Synology Assistant
 10. Add Google Drive
+
+Useful links
+1. [How to repartition a hard drive using linux|https://www.golinuxcloud.com/extend-resize-primary-partition-non-lvm-linux/]
+After partitioning this was helpful to get over grub errors on restart https://www.quora.com/How-do-I-fix-a-grub-rescue-unknown-file-system-error
+
+
