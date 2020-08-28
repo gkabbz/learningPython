@@ -38,9 +38,9 @@ periodically fetch data from the metadatabase to update the UI
 2. To install optional airflow packages you can specify them during install
     `pip install apache-airflow[gcp, celery, crypto, mysql, rabbitmq, redis]`
 3. To specify a specific version of airflow 
-    `pip install apache-airflow[gcp, celery, crypto, mysql, rabbitmq, redis]==1.10.10`
+    `pip install "apache-airflow[gcp, celery, crypto, mysql, rabbitmq, redis]"==1.10.10`
 4. To specify a requirements file
-    `pip install apache-airflow[gcp, celery, crypto, mysql, rabbitmq, redis]==1.10.10 --constraint requirements-python3.7.txt`
+    `pip install "apache-airflow[gcp, celery, crypto, mysql, rabbitmq, redis]"==1.10.11 --constraint requirements-python3.7.txt`
 
 ####Understanding the Airflow Setup
 1. To initialize the metadata database
@@ -55,5 +55,30 @@ periodically fetch data from the metadatabase to update the UI
 - Create folder in that path.
 - Alternatively you could create a folder elsewhere and change the path in the config file
 
+####UI Walkthrough
+Views
+Graph View - Visualize tasks and dependencies of dags. 
+Tree View - Gives true represenation of dag that spans across time. Each column corresponds to a dag run and each square correspends to a specific run.
+Dialog box - Has lots of options. Can see the log effects of the corresponding task. 
+Gantt Chart - Can see bottlenecks and where the bulk of time is spent for a specific dag run
+
+####Command Line Walkthrough
+`airflow initdb` - used to setup the sql db that airflow uses
+\
+`airflow resetdb` - used to rebuild metadata db to get a fresh new db. You'll lose everything including variables, connections etc
+
+`airflow webserver` - to start webserver and get access to UI
+
+`airflow scheduler` - to start the scheduler
+
+`airflow worker` - starts a celery worker to process commands in a distributed manner
+
+`airflow list_dags` - to see list of dags
+
+`airflow list_tasks $[DAG_NAME]` - see list of tasks in a dag
+
+`airflow list_tasks $[DAG_NAME] --tree` - see the dependencies of tasks in a given dag
+
+`airflow test $[DAG_NAME] $[task_name] $[execution_date_in_past]` - Run a given task without checking for dependencies and storing states in the metadata database. useful for unit testing tasks.
 
 
