@@ -64,7 +64,7 @@ Gantt Chart - Can see bottlenecks and where the bulk of time is spent for a spec
 
 ####Command Line Walkthrough
 `airflow initdb` - used to setup the sql db that airflow uses
-\
+
 `airflow resetdb` - used to rebuild metadata db to get a fresh new db. You'll lose everything including variables, connections etc
 
 `airflow webserver` - to start webserver and get access to UI
